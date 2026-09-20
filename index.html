@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sylhet Travel Guide</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="compass" class="w-8 h-8 text-emerald-600 dark:text-emerald-400"></i>
+                <div class="leading-none">
+                    <span class="block text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                        Explore Sylhet
+                    </span>
+                    <span class="block mt-1 text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                        Traveler's Companion
+                    </span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="itineraryBtn" class="relative p-2 rounded-lg bg-emerald-50 dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors">
+                    <i data-lucide="bookmark" class="w-5 h-5"></i>
+                    <span id="itineraryBadge" class="hidden absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                </button>
+                <button id="themeToggleBtn" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="moon" id="themeMoon" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="sun" id="themeSun" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section relative overflow-hidden text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.25),transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(20,184,166,0.35),transparent_35%)]"></div>
+        <div class="relative max-w-7xl mx-auto">
+            <div class="max-w-3xl mx-auto text-center space-y-6">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium backdrop-blur-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-emerald-300"></i>
+                    Premium Sylhet travel inspiration
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                    Explore the Best Tourist Places in Sylhet
+                </h1>
+                <p class="text-base sm:text-lg text-emerald-50/90 max-w-2xl mx-auto">
+                    Your all-in-one Sylhet travel guide with hotel details, seasonal advice, live distance estimates, and curated local experiences.
+                </p>
+            </div>
+
+            <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                <div class="glass-card p-5 rounded-2xl border border-white/10">
+                    <div class="text-3xl font-black text-white">10+</div>
+                    <div class="mt-1 text-sm text-emerald-50/80">Curated destinations</div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-white/10">
+                    <div class="text-3xl font-black text-white">5</div>
+                    <div class="mt-1 text-sm text-emerald-50/80">Best seasons highlighted</div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border border-white/10">
+                    <div class="text-3xl font-black text-white">1</div>
+                    <div class="mt-1 text-sm text-emerald-50/80">Complete guide for Sylhet</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <article class="feature-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                <div class="feature-icon mb-4"><i data-lucide="mountain-snow" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold mb-2">Scenic escapes</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">From valley roads to mountain overlooks, Sylhet offers unforgettable views and fresh-air experiences.</p>
+            </article>
+            <article class="feature-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                <div class="feature-icon mb-4"><i data-lucide="leaf" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold mb-2">Nature & greenery</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">Tea gardens, rainforests, waterfalls, and river landscapes make every trip visually rich and peaceful.</p>
+            </article>
+            <article class="feature-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+                <div class="feature-icon mb-4"><i data-lucide="badge-check" class="w-6 h-6"></i></div>
+                <h3 class="text-lg font-bold mb-2">Easy trip planning</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">Check hotel contacts, route times, best seasons, and nearby attractions in one polished dashboard.</p>
+            </article>
+        </section>
+        
+        <!-- Live Distance Calculator Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <i data-lucide="navigation" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                <h2 class="text-xl font-bold">Live Distance & Travel Time Calculator</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Your current location</label>
+                    <button id="getGeoBtn" class="w-full flex items-center justify-center space-x-2 py-2.5 px-4 bg-emerald-50 dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 rounded-lg hover:bg-emerald-100 dark:hover:bg-slate-600 transition-colors border border-emerald-200 dark:border-slate-600">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        <span id="geoBtnText">Use GPS location</span>
+                    </button>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Select destination</label>
+                    <select id="calcDestination" class="w-full py-2.5 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="">Choose destination...</option>
+                    </select>
+                </div>
+                <div>
+                    <button id="calculateDistanceBtn" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <i data-lucide="calculator" class="w-4 h-4"></i>
+                        <span>Calculate distance</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Result Box -->
+            <div id="calcResult" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 dark:bg-slate-900/60 border border-emerald-200 dark:border-slate-700">
+                <div class="flex flex-wrap gap-6 items-center justify-around text-center">
+                    <div>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Approx. distance</span>
+                        <p id="resDistance" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">-</p>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Travel time (by car)</span>
+                        <p id="resTime" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <!-- Search -->
+            <div class="relative w-full sm:w-80">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Search places or hotels..." class="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+
+            <!-- Categories -->
+            <div class="flex flex-wrap gap-2 w-full sm:w-auto" id="categoryContainer">
+                <button data-cat="all" class="cat-btn active px-4 py-2 rounded-xl text-sm font-medium transition-colors">All</button>
+                <button data-cat="nature" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 transition-colors">Nature</button>
+                <button data-cat="water" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 transition-colors">Waterfalls & Water Bodies</button>
+                <button data-cat="historical" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 transition-colors">Historical</button>
+            </div>
+        </div>
+
+        <!-- Spots Grid -->
+        <div id="spotsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Content generated by JS -->
+        </div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <i data-lucide="wallet-cards" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 font-semibold">Trip budget</p>
+                        <h2 class="text-2xl font-bold">Estimate your travel cost</h2>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="text-sm font-medium">Number of people
+                        <input id="budgetPeople" type="number" min="1" value="2" class="budget-input mt-1" />
+                    </label>
+                    <label class="text-sm font-medium">Transport (৳)
+                        <input id="budgetTransport" type="number" min="0" value="1200" class="budget-input mt-1" />
+                    </label>
+                    <label class="text-sm font-medium">Food (৳)
+                        <input id="budgetFood" type="number" min="0" value="1000" class="budget-input mt-1" />
+                    </label>
+                    <label class="text-sm font-medium">Hotel (৳)
+                        <input id="budgetHotel" type="number" min="0" value="2000" class="budget-input mt-1" />
+                    </label>
+                    <label class="text-sm font-medium sm:col-span-2">Other (৳)
+                        <input id="budgetOther" type="number" min="0" value="500" class="budget-input mt-1" />
+                    </label>
+                </div>
+                <div class="mt-5 flex items-center justify-between rounded-xl bg-emerald-50 dark:bg-slate-900/70 p-4">
+                    <span class="font-semibold">Estimated total</span>
+                    <strong id="budgetTotal" class="text-2xl text-emerald-700 dark:text-emerald-400">৳4,700</strong>
+                </div>
+                <p id="budgetPerPerson" class="mt-2 text-sm text-right text-slate-500 dark:text-slate-400">৳2,350 per person</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <i data-lucide="route" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 font-semibold">My trip</p>
+                        <h2 class="text-2xl font-bold">Plan your destinations</h2>
+                    </div>
+                </div>
+                <div id="tripChoices" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1"></div>
+                <button id="buildTripBtn" class="mt-5 w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="wand-sparkles" class="w-4 h-4"></i>
+                    Build my trip
+                </button>
+                <div id="tripPlan" class="mt-5 space-y-3" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="travel-planner rounded-3xl border border-slate-200 dark:border-slate-700 bg-gradient-to-r from-emerald-50 via-white to-teal-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 p-6 md:p-8 shadow-lg">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="max-w-xl">
+                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">Travel planner</p>
+                    <h3 class="mt-2 text-2xl md:text-3xl font-black text-slate-900 dark:text-white">Plan a smooth, memorable Sylhet getaway</h3>
+                    <p class="mt-3 text-slate-600 dark:text-slate-300">Use the map, route estimates, and hotel listings together to design a trip that balances nature, comfort, and local charm.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700"><i data-lucide="map" class="w-4 h-4 text-emerald-600"></i> Route ready</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700"><i data-lucide="hotel" class="w-4 h-4 text-emerald-600"></i> Stay options</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700"><i data-lucide="clock-3" class="w-4 h-4 text-emerald-600"></i> Travel times</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 md:p-8 shadow-lg">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-6">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">Traveler reviews</p>
+                    <h3 class="mt-2 text-2xl md:text-3xl font-black text-slate-900 dark:text-white">What visitors say about Sylhet</h3>
+                </div>
+                <div class="flex items-center gap-1 text-amber-400" aria-label="5 star reviews">
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <article class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold">Arif Hasan</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Weekend traveler</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">"Sylhet feels calm, scenic, and full of soul. The route details and hotel suggestions made planning so much easier and stress-free."</p>
+                </article>
+
+                <article class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold">N</div>
+                        <div>
+                            <h4 class="font-bold">Nadia Rahman</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Nature lover</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">"From Jaflong to Ratargul, every place was beautifully described. It felt like having a local guide in my pocket while traveling."</p>
+                </article>
+
+                <article class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-5">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-full bg-gradient-to-br from-violet-400 to-indigo-500 flex items-center justify-center text-white font-bold">S</div>
+                        <div>
+                            <h4 class="font-bold">Samiul Islam</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Family trip</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed">"This gave us exact travel times and comfortable hotel options. The experience felt premium, smooth, and very well organized."</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Google Map & Route Explorer -->
+        <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400 font-semibold">Explore by map</p>
+                    <h2 class="text-2xl font-bold">Google Maps & Route View</h2>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <select id="mapSpotSelect" class="w-full sm:w-64 py-2.5 px-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="">Select a place</option>
+                    </select>
+                    <a id="openMapLink" href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                        Open in Maps
+                    </a>
+                </div>
+            </div>
+            <div class="p-4">
+                <iframe id="googleMapFrame" class="w-full h-[420px] rounded-xl border-0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Sylhet%20Bangladesh&z=11&output=embed"></iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Details Modal -->
+    <div id="spotModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl overflow-y-auto relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="modalContent" class="p-6 space-y-6">
+                <!-- Modal Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Itinerary Modal -->
+    <div id="itineraryModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl p-6 relative space-y-4">
+            <div class="flex items-center justify-between border-b pb-3 border-slate-200 dark:border-slate-700">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="bookmark" class="text-emerald-600"></i> Your saved places
+                </h3>
+                <button id="closeItineraryBtn" class="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="itineraryList" class="space-y-3 max-h-80 overflow-y-auto">
+                <!-- Itinerary list items -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Custom JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>

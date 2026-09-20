@@ -1,0 +1,118 @@
+body {
+    font-family: Inter, "Segoe UI", sans-serif;
+    background:
+        radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.dark body {
+    background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+}
+
+.hero-section {
+    background:
+        linear-gradient(135deg, rgba(3, 105, 82, 0.94), rgba(15, 23, 42, 0.95)),
+        url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+}
+
+.feature-card,
+#spotsGrid > div,
+.travel-planner {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-card:hover,
+#spotsGrid > div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.9rem;
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+}
+
+.dark .feature-icon {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(20, 184, 166, 0.2));
+    color: #a7f3d0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+/* Category Button Active Styling */
+.cat-btn.active {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 10px 22px rgba(16, 185, 129, 0.25);
+}
+
+.cat-btn {
+    border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+#spotsGrid > div {
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Leaflet Map Height Fix inside Modal */
+.leaflet-container {
+    border-radius: 0.75rem;
+    z-index: 1;
+}
+
+@media (max-width: 640px) {
+    .hero-section {
+        padding-top: 5rem;
+        padding-bottom: 4rem;
+    }
+}
+
+.budget-input {
+    display: block;
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.65rem;
+    background: #f8fafc;
+    padding: 0.65rem 0.75rem;
+    outline: none;
+}
+
+.budget-input:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.dark .budget-input {
+    border-color: #475569;
+    background: #0f172a;
+    color: #f8fafc;
+}
