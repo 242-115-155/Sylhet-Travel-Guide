@@ -7,7 +7,7 @@ The website provides information about popular tourist spots, including their sp
 ## 🌐 Live Website
 
 **Live Demo:**
- https://242-115-155.github.io/Sylhet-Travel-Guide/
+https://maliha-tabassum-hridila.github.io/Sylhet-Travel-Guide/
 
 ## ✨ Features
 
