@@ -119,7 +119,7 @@ The website is designed to work across:
 
 ## 👨‍💻 Author
 
-**Tawhid Hussain Chowdhury**
+**MALIHA TABASSUM HRIDILA**
 
 Computer Science Student
 
